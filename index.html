@@ -1,0 +1,341 @@
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <meta charset="utf-8"/>  
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>  
+  <title>Eduverse 2.0</title>    <!-- Font (same as original) -->    <link rel="preconnect" href="https://fonts.googleapis.com"/>  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>    <style>  
+    :root{  
+      --bg: #f9fafb;        /* gray-50 */  
+      --white: #ffffff;  
+      --black: #000000;  
+      --gray-100:#f3f4f6;  
+      --gray-200:#e5e7eb;  
+      --gray-300:#d1d5db;  
+      --gray-500:#6b7280;  
+      --gray-700:#374151;  
+      --gray-800:#1f2937;  
+      --card: #ffffff;  
+      --card-foreground: #111827;  
+      --shadow: 0 1px 2px rgba(0,0,0,.06), 0 4px 24px rgba(0,0,0,.06);  
+      --radius: 14px;  
+    }  
+  
+    *{box-sizing:border-box}  
+    html,body{margin:0;padding:0}  
+    body{  
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";  
+      background: var(--bg);  
+      color: var(--card-foreground);  
+      -webkit-font-smoothing: antialiased;  
+      -moz-osx-font-smoothing: grayscale;  
+    }  
+  
+    /* Top utility header with two round icon buttons */  
+    .topbar{  
+      position:fixed; inset:0 0 auto 0; z-index:20;  
+      padding: 16px 0;  
+      background: transparent;  
+      pointer-events:none;  
+    }  
+    .topbar .container{  
+      max-width: 1120px; margin:0 auto; padding:0 16px;  
+      display:flex; align-items:center; justify-content:space-between; height:64px;  
+      pointer-events:auto;  
+    }  
+    .icon-btn{  
+      height:40px; width:40px; border:0; border-radius:9999px;  
+      display:inline-flex; align-items:center; justify-content:center;  
+      background: rgba(0,0,0,.30);  
+      color:#fff; backdrop-filter: blur(6px);  
+      cursor:pointer; transition: background .2s ease, transform .2s ease;  
+    }  
+    .icon-btn:hover{ background: rgba(0,0,0,.5); transform: translateY(-1px) }  
+    .icon{ width:24px; height:24px; display:block }  
+  
+    /* Sticky page title header */  
+    .pagehead{  
+      position: sticky; top:0; z-index:10;  
+      background: var(--white);  
+      box-shadow: 0 1px 0 rgba(17,24,39,.06);  
+      animation: fadeIn .5s ease both;  
+      margin-top:80px; /* space for topbar */  
+    }  
+    .pagehead .inner{  
+      max-width: 640px; margin:0 auto; padding: 0 16px;  
+      display:flex; align-items:center; justify-content:center; height:64px;  
+    }  
+    h1.title{  
+      margin:0; font-weight:700; font-size: 1.5rem; color:#1f2937;  
+      animation:pulseTitle 1.6s ease-in-out infinite;  
+    }  
+  
+    /* Grid cards section */  
+    .wrap{ max-width: 640px; margin: 0 auto; padding: 20px 16px 56px; }  
+    .grid{  
+      display:grid; grid-template-columns: 1fr; gap: 16px;  
+    }  
+    @media(min-width:520px){ .grid{ gap:16px } }  
+    .card{  
+      display:flex; align-items:center; gap:12px;  
+      background: var(--card); color: var(--card-foreground);  
+      border-radius: var(--radius);  
+      padding: 10px;  
+      box-shadow: var(--shadow);  
+      border: 0;  
+      text-decoration:none;  
+      transform: translateY(0) scale(1);  
+      transition: transform .18s ease, box-shadow .18s ease;  
+      will-change: transform, box-shadow;  
+    }  
+    .card:hover{  
+      transform: translateY(-2px) scale(1.02);  
+      box-shadow: 0 6px 30px rgba(0,0,0,.12);  
+    }  
+    .thumb{  
+      width:80px; height:60px; border-radius: 10px; object-fit: cover; flex: 0 0 auto;  
+      background:#eee;  
+    }  
+    .meta{ flex:1 1 auto; min-width:0 }  
+    .meta h3{ margin:0; font-size:1rem; font-weight:600; color:#000 }  
+    .meta p{ margin:.25rem 0 0; font-size:.875rem; color:#6b7280; white-space:nowrap; overflow:hidden; text-overflow:ellipsis }  
+    .chev{  
+      flex:0 0 auto; display:inline-flex; align-items:center; justify-content:center;  
+      background: #f3f4f6; border-radius:9999px; padding:6px;  
+    }  
+    .chev svg{ width:16px; height:16px; stroke:#6b7280 }  
+  
+    /* Scroll reveal */  
+    .reveal{ opacity:0; transform: translateY(16px); }  
+    .reveal.show{ opacity:1; transform: translateY(0); transition: all .6s ease }  
+  
+    /* Footer */  
+    .footer{  
+      margin-top: 8px;  
+      background: #0b0b0b;  
+      color: #d1d5db;  
+    }  
+    .footer .section{  
+      max-width: 1120px; margin:0 auto; padding: 24px 0;  
+    }  
+    .footer .row{  
+      display:flex; flex-wrap:wrap; gap: 28px; padding: 0 16px;  
+    }  
+    .fcol{ flex: 1 1 260px; }  
+    .footerLogo img{ width:100px; height:100px; object-fit:cover; border-radius: 14px }  
+    .orgName{ margin-top:10px; font-weight:700; color:#fff }  
+    .orgAddress{ margin:6px 0 0; color:#9ca3af }  
+    .footTitle{ margin:0 0 10px; font-weight:700; color:#e5e7eb }  
+    .links{ list-style:none; padding:0; margin:0 }  
+    .links li{ margin: 10px 0 }  
+    .links a{ color:#cbd5e1; text-decoration:none }  
+    .links a:hover{ text-decoration:underline }  
+  
+    .footBottom{  
+      border-top: 1px solid rgba(255,255,255,.08);  
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;  
+      gap:12px; padding: 12px 16px; max-width:1120px; margin:0 auto; color:#9ca3af;  
+    }  
+    .social{ display:flex; gap:12px }  
+    .social a{  
+      width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center;  
+      border-radius:10px; background: rgba(255,255,255,.06);  
+      text-decoration:none; transition: transform .15s ease, background .15s ease;  
+    }  
+    .social a:hover{ transform: translateY(-2px); background: rgba(255,255,255,.12) }  
+    .yt, .tg{ width:18px; height:18px; display:block }  
+  
+    /* Animations */  
+    @keyframes fadeIn{ from{opacity:0; transform: translateY(-8px)} to{opacity:1; transform:none} }  
+    @keyframes pulseTitle{  
+      0%,100%{ opacity:1 }  
+      50%{ opacity:.75 }  
+    }  
+  </style>  </head>  
+<body>    <!-- Top icon bar (menu + bell) -->    <div class="topbar">  
+    <div class="container">  
+      <button class="icon-btn" aria-label="Toggle Menu" type="button">  
+        <!-- Lucide menu -->  
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+          <line x1="4" y1="6" x2="20" y2="6"></line>  
+          <line x1="4" y1="12" x2="20" y2="12"></line>  
+          <line x1="4" y1="18" x2="20" y2="18"></line>  
+        </svg>  
+      </button>  <button class="icon-btn" aria-label="Toggle Notifications" type="button">  
+    <!-- Lucide bell -->  
+    <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+      <path d="M10.268 21a2 2 0 0 0 3.464 0"></path>  
+      <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path>  
+    </svg>  
+  </button>  
+</div>
+
+  </div>    <!-- Sticky page title -->    <header class="pagehead">  
+    <div class="inner">  
+      <h1 class="title">Future Toppers Class 9</h1>  
+    </div>  
+  </header>    <!-- Main cards -->    <main class="wrap">  
+    <div class="grid">  
+      <!-- Live Classes -->  
+      <a class="card reveal" href="#" aria-label="View Live Classes">  
+        <img class="thumb" alt="" aria-hidden="true" src="">  
+        <div class="meta">  
+          <h3>Live Classes</h3>  
+          <p>Watch live classes</p>  
+        </div>  
+        <span class="chev" aria-hidden="true">  
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+            <path d="m9 18 6-6-6-6"></path>  
+          </svg>  
+        </span>  
+      </a>  <!-- Mathematics -->  
+  <a class="card reveal" href="#" aria-label="View Mathematics">  
+    <img class="thumb" alt="" aria-hidden="true" src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/category_management/subject/50239338613_Maths.jpeg">  
+    <div class="meta">  
+      <h3>Mathematics</h3>  
+      <p>1 Topic</p>  
+    </div>  
+    <span class="chev" aria-hidden="true">  
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+        <path d="m9 18 6-6-6-6"></path>  
+      </svg>  
+    </span>  
+  </a>  
+
+  <!-- Social Science -->  
+  <a class="card reveal" href="#" aria-label="View Social Science">  
+    <img class="thumb" alt="" aria-hidden="true" src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/category_management/subject/60137688614_Social%20Science.jpeg">  
+    <div class="meta">  
+      <h3>Social Science</h3>  
+      <p>1 Topic</p>  
+    </div>  
+    <span class="chev" aria-hidden="true">  
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+        <path d="m9 18 6-6-6-6"></path>  
+      </svg>  
+    </span>  
+  </a>  
+
+  <!-- Science -->  
+  <a class="card reveal" href="#" aria-label="View Science">  
+    <img class="thumb" alt="" aria-hidden="true" src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/category_management/subject/28070448615_WhatsApp%20Image%202025-04-25%20at%204.25.51%20PM.jpeg">  
+    <div class="meta">  
+      <h3>Science</h3>  
+      <p>1 Topic</p>  
+    </div>  
+    <span class="chev" aria-hidden="true">  
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+        <path d="m9 18 6-6-6-6"></path>  
+      </svg>  
+    </span>  
+  </a>  
+
+  <!-- Hindi -->  
+  <a class="card reveal" href="#" aria-label="View Hindi">  
+    <img class="thumb" alt="" aria-hidden="true" src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/category_management/subject/447837223848_Hindi.jpeg">  
+    <div class="meta">  
+      <h3>Hindi</h3>  
+      <p>1 Topic</p>  
+    </div>  
+    <span class="chev" aria-hidden="true">  
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+        <path d="m9 18 6-6-6-6"></path>  
+      </svg>  
+    </span>  
+  </a>  
+
+  <!-- English -->  
+  <a class="card reveal" href="#" aria-label="View English">  
+    <img class="thumb" alt="" aria-hidden="true" src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/category_management/subject/724718721778_English.jpeg">  
+    <div class="meta">  
+      <h3>English</h3>  
+      <p>1 Topic</p>  
+    </div>  
+    <span class="chev" aria-hidden="true">  
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+        <path d="m9 18 6-6-6-6"></path>  
+      </svg>  
+    </span>  
+  </a>  
+
+  <!-- Sanskrit -->  
+  <a class="card reveal" href="#" aria-label="View Sanskrit">  
+    <img class="thumb" alt="" aria-hidden="true" src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/category_management/subject/371831425330_Sanskrit.jpeg">  
+    <div class="meta">  
+      <h3>Sanskrit</h3>  
+      <p>1 Topic</p>  
+    </div>  
+    <span class="chev" aria-hidden="true">  
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+        <path d="m9 18 6-6-6-6"></path>  
+      </svg>  
+    </span>  
+  </a>  
+
+  <!-- Information Technology -->  
+  <a class="card reveal" href="#" aria-label="View Information Technology">  
+    <img class="thumb" alt="" aria-hidden="true" src="https://dxixtlyravvxx.cloudfront.net/540/admin_v1/category_management/subject/290274114891_Artificial%20Intelligence-2.png">  
+    <div class="meta">  
+      <h3>Information Technology</h3>  
+      <p>1 Topic</p>  
+    </div>  
+    <span class="chev" aria-hidden="true">  
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">  
+        <path d="m9 18 6-6-6-6"></path>  
+      </svg>  
+    </span>  
+  </a>  
+</div>
+
+  </main>    <!-- Footer -->    <footer class="footer">  
+    <div class="section">  
+      <div class="row">  
+        <div class="fcol">  
+          <div class="footerLogo">  
+            <img alt="Future Toppers" src="">  
+          </div>  
+          <div class="orgName">Future Toppers</div>  
+          <p class="orgAddress">High-quality education for all.</p>  
+        </div>  <div class="fcol" style="max-width: 280px">  
+      <h4 class="footTitle">Courses</h4>  
+      <ul class="links">  
+        <li><a href="#">Class 9th</a></li>  
+           <li><a href="#">Abhay 9th</a></li>  
+      </ul>  
+    </div>  
+  </div>  
+</div>  
+
+<div class="footBottom">  
+  <p class="copyrighttitle">© 2025 Future Toppers. All Rights Reserved.</p>  
+  <div class="social">  
+    <a href="#" aria-label="YouTube">  
+      <!-- YouTube Icon -->  
+      <svg class="yt" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">  
+        <path d="M23.5 6.2a4.7 4.7 0 0 0-3.3-3.3C18.4 2.4 12 2.4 12 2.4s-6.4 0-8.2.5A4.7 4.7 0 0 0 .5 6.2 49 49 0 0 0 0 12a49 49 0 0 0 .5 5.8 4.7 4.7 0 0 0 3.3 3.3c1.8.5 8.2.5 8.2.5s6.4 0 8.2-.5a4.7 4.7 0 0 0 3.3-3.3 49 49 0 0 0 .5-5.8 49 49 0 0 0-.5-5.8zM9.6 15.5V8.5l6.6 3.5-6.6 3.5z"/>  
+      </svg>  
+    </a>  
+    <a href="#" aria-label="Telegram">  
+      <!-- Telegram Icon -->  
+      <svg class="tg" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">  
+        <path d="M9.03 15.14 8.88 18a1 1 0 0 0 1.58.84l2.27-1.62 3.16 2.33c.58.43 1.41.11 1.58-.58l3.53-14.2c.19-.77-.53-1.45-1.28-1.18L1.6 8.9c-.87.32-.8 1.58.1 1.8l5.32 1.24 10.93-6.7-8.92 8.46c-.2.19-.33.44-.38.72z"/>  
+      </svg>  
+    </a>  
+  </div>  
+</div>
+
+  </footer>    <script>  
+    // Scroll reveal for cards  
+    const reveals = document.querySelectorAll('.reveal');  
+    const onScroll = () => {  
+      const vh = window.innerHeight || document.documentElement.clientHeight;  
+      reveals.forEach(el=>{  
+        const rect = el.getBoundingClientRect();  
+        if(rect.top < vh - 80) el.classList.add('show');  
+      });  
+    };  
+    document.addEventListener('scroll', onScroll, {passive:true});  
+    window.addEventListener('load', onScroll);  
+    onScroll();  
+  </script>  </body>  
+</html>
